@@ -1,0 +1,9 @@
+{
+  "name": "atg-dynadmin-repository",
+  "title": "Atg Dyn Admin Repository Utils",
+  "id": "jid1-DYwHvDOLzdvCSA",
+  "description": "Add-on for ATG Dyn Admin Repository pages",
+  "author": "Dmitry Kolin",
+  "license": "MPL 2.0",
+  "version": "0.2"
+}

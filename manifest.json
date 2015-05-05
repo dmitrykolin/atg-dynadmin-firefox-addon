@@ -1,0 +1,29 @@
+{
+  "manifest_version": 2,
+
+  "name": "atg-dynadmin-repository",
+  "description": "Add-on for ATG Dyn Admin Repository pages",
+  "version": "1.0",
+  "browser_action": {
+    "default_icon": "data/icon-dyn-admin-32.png"
+  },
+  "permissions": [
+    "activeTab"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["*://*/*dyn/admin/nucleus*"],
+      "js": ["data/chrome-injection.js"]
+    }
+  ],
+  "web_accessible_resources": ["data/dynadmin-utils.js"],
+
+  "commands": {
+          "_execute_browser_action": {
+            "suggested_key": {
+              "default": "Alt+Shift+P",
+              "windows": "Alt+Shift+P"              
+            }
+          }
+        }
+}

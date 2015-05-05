@@ -1,0 +1,16 @@
+#![](https://github.com/dmitrykolin/atg-dynadmin-firefox-addon/blob/master/data/icon-dyn-admin-32.png) Welcome to the ATG Dyn-Admin Utils addon!
+
+This Addon provide functionality to help you work with Repository pages in the Dyn Admin application.
+
+Currently you will get:
+* print item by id
+* print item by id (url version)
+* query items
+* add items
+* invalidate cache hot key
+
+[Chrome Extension](https://github.com/dmitrykolin/atg-dynadmin-firefox-addon/blob/master/atg-dynadmin-repository.crx?raw=true) will auto load to the dyn-admin pages
+
+[Firefox Extension](https://github.com/dmitrykolin/atg-dynadmin-firefox-addon/blob/master/atg-dynadmin-repository.xpi?raw=true) will load by hot-key
+
+_**Please visit [wiki](https://github.com/dmitrykolin/atg-dynadmin-firefox-addon/wiki) page for more details**_
