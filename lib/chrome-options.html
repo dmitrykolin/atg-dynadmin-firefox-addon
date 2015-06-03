@@ -1,0 +1,27 @@
+<html>
+<head>
+	<title>Options for DynAdmin utils</title>
+	<script type="text/javascript" src="/external/jquery-ui/external/jquery/jquery.js"></script>
+	<script type="text/javascript" src="chrome-options.js"></script>
+</head>
+<body>
+	<fieldset>
+		<legend>Options for DynAdmin utils</legend>
+		<br />
+	        <label>Inject Component Search autocomplete</label>
+	        <input type="checkbox" id="searchInjection"/>
+		<br />
+		<br />
+	        <label>Real-Time Search</label>
+	        <input type="checkbox" id="realTimeSearch"/><p>Real-Time autocomplete will do ajax call on each chage in input field (CASE SENSITIVE). If real time search is deactivated then autocomplete will populated on page load with all availabel components (search by empty field) and this search are CASE insensitive (nucleus does not retun all component )</p>
+	    <br />
+	    <br />
+			<label>Inject Repository helper</label>
+	        <input type="checkbox" id="repositoryInjection"/>
+		<br />
+		<br />
+	        <button id="saveButton">Save</button>
+	        <button id="eraseButton">Restore default</button>
+	</fieldset>	
+</body>
+</html>

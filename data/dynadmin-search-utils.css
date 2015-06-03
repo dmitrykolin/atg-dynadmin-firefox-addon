@@ -1,0 +1,59 @@
+.ui-autocomplete-input {
+	/*
+	border-color: rgb(243, 243, 244);
+	border-radius: 4px;
+	*/
+}
+
+.ui-autocomplete {
+	background: rgb(249, 249, 249);
+}
+
+.ui-autocomplete .ui-menu-item {
+	background: rgb(249, 249, 249);
+}
+
+.ui-autocomplete .ui-menu-item.ui-state-focus {
+	background: rgb(252, 249, 249);
+	border: solid 1px #667FC0;
+	border-width: 1px 0px 2px 0px;
+}
+
+.ui-autocomplete .ui-menu-item.ui-state-focus a {
+	color: #667FC0;
+}
+
+.ui-autocomplete .ui-menu-item a {
+	font-size: 0.9em;
+}
+
+.ui-autocomplete .ui-menu-item a p {
+	font-size: 0.7em;
+	padding: 0px;
+	margin: 0px;
+}
+
+.ui-autocomplete {
+    max-height: 300px;
+    overflow-y: auto;
+    /* prevent horizontal scrollbar */
+    overflow-x: hidden;
+    /* add padding to account for vertical scrollbar */
+    padding-right: 20px;
+}
+/* IE 6 doesn't support max-height
+ * we use height instead, but this forces the menu to always be this tall
+ */
+* html .ui-autocomplete {
+    height: 300px;
+}
+
+.remove-dyn-admin-utils-search-button {
+	font-size: 0.8em;
+	margin-left: 10px;
+	margin-right: 6px;
+	color: gray;
+	border: 1px solid rgb(223, 222, 222);
+	padding: 2px;
+	background-color: rgb(240, 240, 240);
+}

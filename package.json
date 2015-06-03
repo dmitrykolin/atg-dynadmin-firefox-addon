@@ -1,9 +1,30 @@
 {
-  "name": "atg-dynadmin-repository",
-  "title": "Atg Dyn Admin Repository Utils",
+  "name": "atg-dynadmin-utils",
+  "title": "Atg Dyn Admin Utils",
   "id": "jid1-DYwHvDOLzdvCSA",
-  "description": "Add-on for ATG Dyn Admin Repository pages",
+  "description": "Add-on for ATG Dyn Admin",
   "author": "Dmitry Kolin",
   "license": "MPL 2.0",
-  "version": "0.2"
+  "version": "1.3",
+  "preferences": [{
+        "name": "searchInjection",
+        "title": "Inject Component Search autocomplete",
+        "description": "Inject Component Search autocomplete",
+        "type": "bool",
+        "value": true
+    },
+    {
+        "name": "repositoryInjection",
+        "title": "Inject Repository helper",
+        "description": "Inject Repository helper",
+        "type": "bool",
+        "value": true        
+    },
+    {
+        "name": "realTimeSearch",
+        "title": "Real-Time search",
+        "description": "Real-Time autocomplete (work if 'Inject Repository helper' enabled) will do ajax call on each chage in input field (CASE SENSITIVE). If real time search is deactivated then autocomplete will populated on page load with all availabel components (search by empty field) and this search are CASE insensitive (nucleus does not retun all component )",
+        "type": "bool",
+        "value": true        
+    }]
 }

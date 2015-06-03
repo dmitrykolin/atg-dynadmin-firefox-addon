@@ -193,22 +193,6 @@ getSubmitButton = function() {
 	return document.querySelector('input[type="submit"]');
 }
 
-if (navigator.userAgent.toLowerCase().indexOf('chrome') == -1) {
-	exportFunction(printItem, unsafeWindow, {defineAs: "printItem"});
-	exportFunction(printItemByURL, unsafeWindow, {defineAs: "printItemByURL"});
-	exportFunction(queryItems, unsafeWindow, {defineAs: "queryItems"});
-	exportFunction(addItem, unsafeWindow, {defineAs: "addItem"});
-
-	exportFunction(printItemConsole, unsafeWindow, {defineAs: "printItemConsole"});
-	exportFunction(queryItemsConsole, unsafeWindow, {defineAs: "queryItemsConsole"});
-	exportFunction(addItemConsole, unsafeWindow, {defineAs: "addItemConsole"});
-
-	exportFunction(openInvalidateCachePage, unsafeWindow, {defineAs: "openInvalidateCachePage"});
-} else {
-
-}
-
-
 if (location.pathname.indexOf("/dyn/admin/") == 0) {
 	injectUtils();
 }

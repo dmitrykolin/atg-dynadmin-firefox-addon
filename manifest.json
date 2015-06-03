@@ -1,29 +1,34 @@
 {
   "manifest_version": 2,
-
-  "name": "atg-dynadmin-repository",
-  "description": "Add-on for ATG Dyn Admin Repository pages",
-  "version": "1.0",
+  "name": "atg-dynadmin-utils",
+  "description": "Add-on for ATG Dyn Admin pages",
+  "version": "1.3",
   "browser_action": {
     "default_icon": "data/icon-dyn-admin-32.png"
   },
   "permissions": [
-    "activeTab"
+    "activeTab", "tabs"
   ],
   "content_scripts": [
     {
-      "matches": ["*://*/*dyn/admin/nucleus*"],
-      "js": ["data/chrome-injection.js"]
+      "matches": ["*://*/*dyn/admin/*"],
+      "js": ["/data/external/jquery-ui/external/jquery/jquery.js", "/data/injection-utils.js", "/lib/chrome-main.js"]
     }
   ],
-  "web_accessible_resources": ["data/dynadmin-utils.js"],
-
+  "background": {
+    "scripts": ["/lib/chrome-background.js"]
+  },
+  "web_accessible_resources": [
+      "/data/*",
+      "/lib/*"
+      ],
   "commands": {
-          "_execute_browser_action": {
-            "suggested_key": {
-              "default": "Alt+Shift+P",
-              "windows": "Alt+Shift+P"              
-            }
-          }
-        }
+  "_execute_browser_action": {
+    "suggested_key": {
+      "default": "Alt+Shift+P",
+      "windows": "Alt+Shift+P"              
+      }
+    }
+  },
+  "options_page": "/lib/chrome-options.html"
 }
