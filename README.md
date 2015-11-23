@@ -9,6 +9,7 @@ Repository Pages:
 * query items
 * add items
 * invalidate cache hot key
+* repositore definition preview
 
 Nucleus Pages:
 * component search autocomplete
