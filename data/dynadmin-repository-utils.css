@@ -1,0 +1,86 @@
+.xmlDefinitionHidden {
+	display: none;
+}
+
+.item-descriptor-header {
+	background-color: rgb(95, 188, 255);
+	padding: 0px;
+    margin: 10px 0px 0px 0px;
+}
+
+.item-descriptor-header .toggle-link {
+	cursor: pointer;
+    display: inline-block;
+    font-weight: bold;
+    padding: 4px 10px 4px 8px;
+}
+
+.item-descriptor-body {
+	border: 1px solid rgb(95, 188, 255);
+}
+
+.item-descriptor-tables {
+
+}
+
+.item-descriptor-table {
+	padding: 0px;
+	width: 100%;
+    margin: 10px 0px 0px 0px;
+    border-width: 0px 0px 1px 0px;
+    border-style: solid;
+    border-color: rgb(221, 241, 255);
+}
+
+.item-descriptor-table th {
+	text-align: left;
+	background-color: rgb(221, 241, 255);
+}
+
+.xml-content-popup {
+    height: 86% !important;
+    font-size: 0.8em;
+    background: white !important;
+}
+
+.xml-content-popup code {
+    overflow: visible;
+    background: none;
+    white-space: pre-wrap;
+}
+
+.xml-view-dialog {
+	position: fixed !important;
+    top: 80px !important;
+    left: 80px !important;
+    right: 80px !important;
+    bottom: 80px !important;
+    width: auto !important;
+    z-index: 101;
+}
+
+.view-xml-link {
+	cursor: pointer;
+    display: inline-block;
+    font-weight: bold;
+    font-size: 0.8em;
+    padding: 4px 10px 4px 8px;
+    color: #262AB7;
+}
+
+.item-descriptor-view-properties {
+	padding: 10px 0px 0px 10px;
+}
+
+.item-descriptor-view-properties span {
+	margin-left: 20px
+}
+
+.property-details {
+    font-size: 0.8em;
+    display: inline;
+}
+
+.property-details span {
+    color: gray;
+}

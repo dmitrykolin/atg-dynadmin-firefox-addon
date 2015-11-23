@@ -1,0 +1,65 @@
+  <div class="preview-container" index="{{index}}">
+  	{{#with gsa-template}}
+  	{{#each item-descriptor}}
+  	<div class="item-descriptor-view xml-path" style="" path="//gsa-template/item-descriptor[{{#inc @index}}{{/inc}}]">
+	    <div class="item-descriptor-header" >
+	    	<div class="toggle-link" onclick="$(this).parents('.item-descriptor-view').find('.item-descriptor-body').slideToggle()">item-descriptor: {{_name}} </div>
+	    	<div class="view-xml-link" onclick="showData(this);">(view xml)</div>
+	    </div>
+	    <div class="item-descriptor-body" style="display: none;">
+	    	<div class="item-descriptor-view-properties">
+		    	{{#eachEx property}}
+		    	<div class="xml-path" path="/property[{{#inc @index}}{{/inc}}]">
+					<span>{{_name}}</span> <div class="view-xml-link" onclick="showData(this);">(view xml)</div>
+					<div class="property-details">
+						{{#ifNotEmpty _data-type}}<span>data-type:</span> {{this}};{{/ifNotEmpty}}
+						{{#ifNotEmpty _component-item-type}} <span>component-item-type:</span> {{this}};{{/ifNotEmpty}}
+						{{#ifNotEmpty _item-type}} <span>item-type:</span> {{this}};{{/ifNotEmpty}}
+					</div>
+				</div>
+		    	{{/eachEx}}
+		    	<br/>
+	    	</div>
+
+	    	<div class="item-descriptor-tables">
+		    	{{#eachEx table}}
+	    		<table class="item-descriptor-table xml-path" path="/table[{{#inc @index}}{{/inc}}]">
+	    			<tr>
+	    				<th colspan="2">
+	    					{{_name}} <div class="view-xml-link" onclick="showData(this);">(view xml)</div>
+	    				</th>
+	    				<th>
+	    					table name
+	    				</th>
+						<th colspan="10">
+	    					details
+	    				</th>
+	    			</tr>
+					{{#eachEx property}}
+	    			<tr class="xml-path" path="/property[{{#inc @index}}{{/inc}}]">
+	    				<td width="20">
+	    					
+	    				</td>
+	    				<td width="300">
+	    					{{_name}} <div class="view-xml-link" onclick="showData(this);">(view xml)</div>
+	    				</td>
+	    				<td width="300">
+	    					{{_column-name}}
+	    				</td>
+						<td>
+							<div class="property-details">
+								{{#ifNotEmpty _data-type}}<span>data-type:</span> {{this}};{{/ifNotEmpty}}
+								{{#ifNotEmpty _component-item-type}} <span>component-item-type:</span> {{this}};{{/ifNotEmpty}}
+								{{#ifNotEmpty _item-type}} <span>item-type:</span> {{this}};{{/ifNotEmpty}}
+							</div>
+						</td>
+	    			</tr>
+	    			{{/eachEx}}    			
+	    		</table>
+	    		{{/eachEx}}
+	    	</div>
+	    </div>
+    </div>
+    {{/each}}
+    {{/with}}
+  </div>

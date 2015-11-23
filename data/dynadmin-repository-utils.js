@@ -2,18 +2,40 @@ function isThisNotRepositoryPage() {
 	return (document.querySelectorAll('body > a').length == 0 || document.querySelectorAll('body > a')[0].innerHTML != 'atg.adapter.gsa.GSARepository' || document.querySelector('h2') == null || document.querySelector('h2').innerHTML != "Examine the Repository, Control Debugging ");
 }
 
+function isRepositoryPage() {
+	return (document.querySelectorAll('body > a').length > 0 && (document.querySelectorAll('body > a')[0].innerHTML == 'atg.adapter.gsa.GSARepository' || document.querySelectorAll('body > a')[0].innerHTML == 'atg.adapter.version.VersionRepository'));
+}
+
+function isRepositoryItemsView() {
+	return (document.querySelectorAll('h2').length > 0 && document.querySelector('h2').innerHTML == "Examine the Repository, Control Debugging ");
+}
+
+function isRepositoryDefinitionFilesView() {
+	return (document.querySelectorAll('h1').length > 1 && document.querySelectorAll('h1')[1].innerHTML == "Property definitionFiles");
+}
+
 var availableItemDescriptors = [];
 
 function injectUtils() {
 	availableItemDescriptors = [];
 
-	if (isThisNotRepositoryPage()) {
+	if (!isRepositoryPage()) {
 		console.log('DynAdminUtils: not an atg repository ['+location.pathname+']');
 		return;
 	}
 
 	console.log('DynAdminUtils: atg repository page ['+location.pathname+']');
 
+	if (isRepositoryItemsView()) {
+		injectRepositoryItemsViewUtils();
+	} else if (isRepositoryDefinitionFilesView()) {
+		injectRepositoryDefinitionFilesViewUtils();
+	}
+
+	console.log('DynAdminUtils: injected');
+}
+
+function injectRepositoryItemsViewUtils() {
 	var itemDescriptorTable = document.querySelectorAll('table')[0];
 	var tableHeaderCell = itemDescriptorTable.querySelector('tr td');
 
@@ -30,8 +52,91 @@ function injectUtils() {
 	
 	addUtilLinksForItemDescriptors(itemDescriptorTable);
 	addUtilLinksForRQLConsoleTextArea();
+}
 
-	console.log('DynAdminUtils: injected');
+function injectRepositoryDefinitionFilesViewUtils() {
+	if (document.querySelectorAll('table').length < 2) {
+		return;
+	}
+
+	var definitionsTable = document.querySelectorAll('table')[1];
+	var definitionArray = definitionsTable.querySelectorAll('table pre');
+
+	var x2js = new X2JS();
+	var templateSource = '';
+	$.ajax({
+		url: itemDescriptorsPreviewTemplateURL,
+		async: true,
+		success: function (response) {
+			templateSource = response;
+			
+			var timeoutV = 0;
+			if (!window.Handlebars) {
+				timeoutV = 1000;
+			}
+
+			window.definitionStorage = {};
+
+			setTimeout(function() {
+				var template = Handlebars.compile(templateSource);
+
+				Handlebars.registerHelper('inc', function(context) {
+				  return parseInt(context) + 1;
+				});
+
+				Handlebars.registerHelper('ifNotEmpty', function(context, options) {
+				  if (context && context != '') {
+				  	return options.fn(context);
+				  } else {
+				    options.inverse(this);
+				  }
+				});
+
+				Handlebars.registerHelper('eachEx', function(contextArrayOrSingleItem, options) {
+					var ret = "";
+
+					if (options.data) {
+						data = Handlebars.createFrame(options.data);
+					}
+
+					if (!contextArrayOrSingleItem) {
+						return;
+					} else if (contextArrayOrSingleItem.length) {
+						for (var i = 0; i < contextArrayOrSingleItem.length; i++) {
+							if (data) {
+								data.index = i;
+							}
+							ret = ret + options.fn(contextArrayOrSingleItem[i], { data: data });
+						}
+					} else {
+						if (data) {
+							data.index = 0;
+						}
+						ret = ret + options.fn(contextArrayOrSingleItem, { data: data });
+					}
+					return ret;
+				});
+
+				for (var i = 0; i < definitionArray.length; i++) {
+					var definitionXMLDesctiption = definitionArray[i];
+					definitionXMLDesctiption.className = definitionXMLDesctiption.className + " xmlDefinitionHidden";
+					var definitionItemViewContainer = definitionXMLDesctiption.parentElement;
+					var repositoryDefinitionObject = x2js.xml_str2json(definitionXMLDesctiption.textContent);
+					repositoryDefinitionObject['index'] = i;
+					repositoryDefinitionObject['xmlDocument'] = jQuery.parseXML( definitionXMLDesctiption.textContent );
+					repositoryDefinitionObject['xmlText'] = definitionXMLDesctiption.textContent;
+					console.log(repositoryDefinitionObject);
+					window.definitionStorage['definition_' + i] = repositoryDefinitionObject;
+
+					var html = template(repositoryDefinitionObject);
+					var definitionPreview = html;
+
+					definitionItemViewContainer.parentElement.querySelector('td').insertAdjacentHTML('beforeend', '<div class="show_xml_button_container"><br/><br/><br/>Preview mode activated<br/><br/>' + getShowXMLDefinitionViewLink() + '</div>');
+					definitionItemViewContainer.insertAdjacentHTML('beforeend', definitionPreview);
+				}
+			}, timeoutV);
+		}
+	});	
 }
 
 function addUtilLinksForItemDescriptors(itemDescriptorTable) {
@@ -104,6 +209,10 @@ function getAddItemLink(itemDescriptorName) {
 	return generateLinkItem("add", "addItem('"+itemDescriptorName+"');");
 }
 
+function getShowXMLDefinitionViewLink() {
+	return generateLinkItem("Show XML", "showXMLDefinitionView(this);");
+}
+
 function generateLinkItem(name, functionCall) {
 	return "<a href=\"#\" onclick=\""+functionCall+" return false;\">"+name+"</a>";
 }
@@ -143,6 +252,59 @@ printItemByURL = function (itemDescriptorName) {
 queryItems = function (itemDescriptorName) {
 	getRQLConsoleTextArea().value = getQueryItemsConsoleText(itemDescriptorName);
 	focusSubmitButton();
+}
+
+showXMLDefinitionView = function (element) {
+	var labelContainer = element.parentElement.parentElement;
+	var contentContainer = labelContainer.parentElement.querySelectorAll('td')[1];
+	
+	var previewContainer = contentContainer.querySelector('.preview-container');
+	previewContainer.remove();
+
+	var xmlDefinitionPre = contentContainer.querySelector('.xmlDefinitionHidden');
+	xmlDefinitionPre.className = xmlDefinitionPre.className.replace('xmlDefinitionHidden', '');
+
+	element.parentElement.remove();
+}
+
+showData = function (element) {
+	var index = $(element).parents('.preview-container').attr('index');
+	var selectedDefinition = window.definitionStorage['definition_' + index];
+
+	var it = $(element).parents('.xml-path');
+	var path = '';
+	while (it.size() > 0) {
+		path = it.attr('path') + path;
+		it = $(it).parents('.xml-path');
+	}
+
+	var resultObject = $(selectedDefinition.xmlDocument).xpathEvaluate(path);
+	var resultItem = resultObject[0];
+
+	var xmlS = new XMLSerializer()
+	var resultText = xmlS.serializeToString(resultItem);
+
+	var dialogElement = document.createElement("pre");
+	dialogElement.setAttribute("class","xml-content-popup");
+
+	var dialogTextareaElement = document.createElement("code");
+	dialogElement.appendChild(dialogTextareaElement);
+	
+	var dialogText = document.createTextNode(resultText);
+	dialogTextareaElement.appendChild(dialogText);
+
+	hljs.highlightBlock(dialogTextareaElement);
+
+	$(dialogElement).dialog({
+      modal: true,
+      title: 'XML View',
+      closeOnEscape: true,
+      draggable: false,
+      dialogClass: "xml-view-dialog",
+      beforeClose: function( event, ui ) {dialogElement.remove()},
+      buttons: {
+      }
+    });
 }
 
 addItem = function (itemDescriptorName) {
@@ -206,3 +368,19 @@ function doc_keyUp(e) {
 }
 
 document.addEventListener('keyup', doc_keyUp, false);
+
+$.fn.xpathEvaluate = function (xpathExpression) {
+   // NOTE: vars not declared local for debug purposes
+   $this = this.first(); // Don't make me deal with multiples before coffee
+
+   // Evaluate xpath and retrieve matching nodes
+   xpathResult = this[0].evaluate(xpathExpression, this[0], null, XPathResult.ORDERED_NODE_ITERATOR_TYPE, null);
+
+   result = [];
+   while (elem = xpathResult.iterateNext()) {
+      result.push(elem);
+   }
+
+   $result = jQuery([]).pushStack( result );
+   return $result;
+}
